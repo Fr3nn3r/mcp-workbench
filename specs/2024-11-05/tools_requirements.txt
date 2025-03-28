@@ -1,0 +1,34 @@
+TOOLS REQUIREMENTS (MCP 2024-11-05)
+
+Capabilities
+- MUST declare the "tools" capability.
+- MAY include "listChanged: true".
+
+tools/list
+- MUST support "tools/list" for tool discovery.
+- SHOULD support pagination via cursor.
+
+tools/call
+- MUST support "tools/call" for tool invocation.
+
+tools/list_changed
+- SHOULD emit this notification if "listChanged: true".
+
+Data Types
+- MUST include in each tool: name, description, inputSchema.
+- MUST return result content with one or more items:
+  - Text: type: "text", text
+  - Image: type: "image", data (base64), mimeType
+  - Resource: type: "resource", uri, mimeType, content
+- MAY include isError: true for tool execution failures.
+
+Error Handling
+- SHOULD return -32602 for unknown tool or invalid arguments.
+- SHOULD return -32603 for internal errors.
+- SHOULD include isError: true for execution failure.
+
+Security
+- MUST validate tool inputs.
+- MUST implement access controls.
+- MUST sanitize outputs.
+- MUST rate limit invocations.

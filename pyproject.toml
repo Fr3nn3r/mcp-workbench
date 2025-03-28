@@ -1,0 +1,15 @@
+[project]
+name = "mcp-workbench"
+version = "0.1.0"
+description = "MCP Test Runner with version awareness"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "pathlib",
+    "typing",
+    "argparse"
+]
+
+[build-system]
+requires = ["setuptools>=42.0.0", "wheel"]
+build-backend = "setuptools.build_meta"

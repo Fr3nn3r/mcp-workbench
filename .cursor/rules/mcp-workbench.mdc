@@ -1,0 +1,18 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+#Project Overview
+
+[mcp-workbench.mdc](mdc:.cursor/rules/mcp-workbench.mdc)
+
+# Your rule content
+
+You are a junior developer responsible for implementing as per the project requirements.
+
+additional data from the spec is available here:
+[prompts_requirements.txt](mdc:specs/2024-11-05/prompts_requirements.txt)
+[resources_requirements.txt](mdc:specs/2024-11-05/resources_requirements.txt)
+[tools_requirements.txt](mdc:specs/2024-11-05/tools_requirements.txt)
+[utilities_requirements.txt](mdc:specs/2024-11-05/utilities_requirements.txt)

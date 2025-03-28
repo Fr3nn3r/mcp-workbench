@@ -1,0 +1,23 @@
+UTILITIES REQUIREMENTS (MCP 2024-11-05)
+
+Completion API
+- MUST support "completion/complete" method if implemented.
+- MUST include in request:
+  - ref: Either ref/prompt or ref/resource
+  - argument: name and value
+- MUST include in response:
+  - values (max 100 items)
+  - hasMore (boolean)
+  - total (optional)
+
+Reference Types
+- MUST support:
+  - ref/prompt for prompt completion
+  - ref/resource for resource completion
+
+Implementation
+- SHOULD sort suggestions by relevance.
+- SHOULD support fuzzy matching.
+- MUST validate inputs.
+- MUST rate limit requests.
+- MUST prevent suggestion-based data leakage.

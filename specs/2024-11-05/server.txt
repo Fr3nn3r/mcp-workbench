@@ -1,0 +1,989 @@
+Server Features
+Protocol Revision: 2024-11-05
+Servers provide the fundamental building blocks for adding context to language models via MCP. These primitives enable rich interactions between clients, servers, and language models:
+
+Prompts: Pre-defined templates or instructions that guide language model interactions
+Resources: Structured data or content that provides additional context to the model
+Tools: Executable functions that allow models to perform actions or retrieve information
+Each primitive can be summarized in the following control hierarchy:
+
+Primitive	Control	Description	Example
+Prompts	User-controlled	Interactive templates invoked by user choice	Slash commands, menu options
+Resources	Application-controlled	Contextual data attached and managed by the client	File contents, git history
+Tools	Model-controlled	Functions exposed to the LLM to take actions	API POST requests, file writing
+Explore these key primitives in more detail below:
+
+++++++++++++++++++++++++++++++++++++
+Prompts
+Prompts
+Protocol Revision: 2024-11-05
+The Model Context Protocol (MCP) provides a standardized way for servers to expose prompt templates to clients. Prompts allow servers to provide structured messages and instructions for interacting with language models. Clients can discover available prompts, retrieve their contents, and provide arguments to customize them.
+
+User Interaction Model 
+Prompts are designed to be user-controlled, meaning they are exposed from servers to clients with the intention of the user being able to explicitly select them for use.
+
+Typically, prompts would be triggered through user-initiated commands in the user interface, which allows users to naturally discover and invoke available prompts.
+
+For example, as slash commands:
+
+Example of prompt exposed as slash command
+
+However, implementors are free to expose prompts through any interface pattern that suits their needs—the protocol itself does not mandate any specific user interaction model.
+
+Capabilities 
+Servers that support prompts MUST declare the prompts capability during initialization:
+
+{
+  "capabilities": {
+    "prompts": {
+      "listChanged": true
+    }
+  }
+}
+
+listChanged indicates whether the server will emit notifications when the list of available prompts changes.
+
+Protocol Messages 
+Listing Prompts 
+To retrieve available prompts, clients send a prompts/list request. This operation supports pagination.
+
+Request:
+
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "prompts/list",
+  "params": {
+    "cursor": "optional-cursor-value"
+  }
+}
+
+Response:
+
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "prompts": [
+      {
+        "name": "code_review",
+        "description": "Asks the LLM to analyze code quality and suggest improvements",
+        "arguments": [
+          {
+            "name": "code",
+            "description": "The code to review",
+            "required": true
+          }
+        ]
+      }
+    ],
+    "nextCursor": "next-page-cursor"
+  }
+}
+
+Getting a Prompt 
+To retrieve a specific prompt, clients send a prompts/get request. Arguments may be auto-completed through the completion API.
+
+Request:
+
+{
+  "jsonrpc": "2.0",
+  "id": 2,
+  "method": "prompts/get",
+  "params": {
+    "name": "code_review",
+    "arguments": {
+      "code": "def hello():\n    print('world')"
+    }
+  }
+}
+
+Response:
+
+{
+  "jsonrpc": "2.0",
+  "id": 2,
+  "result": {
+    "description": "Code review prompt",
+    "messages": [
+      {
+        "role": "user",
+        "content": {
+          "type": "text",
+          "text": "Please review this Python code:\ndef hello():\n    print('world')"
+        }
+      }
+    ]
+  }
+}
+
+List Changed Notification 
+When the list of available prompts changes, servers that declared the listChanged capability SHOULD send a notification:
+
+{
+  "jsonrpc": "2.0",
+  "method": "notifications/prompts/list_changed"
+}
+
+Message Flow 
+Server
+Client
+Server
+Client
+Discovery
+Usage
+Changes
+opt
+[listChanged]
+prompts/list
+List of prompts
+prompts/get
+Prompt content
+prompts/list_changed
+prompts/list
+Updated prompts
+Data Types 
+Prompt 
+A prompt definition includes:
+
+name: Unique identifier for the prompt
+description: Optional human-readable description
+arguments: Optional list of arguments for customization
+PromptMessage 
+Messages in a prompt can contain:
+
+role: Either “user” or “assistant” to indicate the speaker
+content: One of the following content types:
+Text Content 
+Text content represents plain text messages:
+
+{
+  "type": "text",
+  "text": "The text content of the message"
+}
+
+This is the most common content type used for natural language interactions.
+
+Image Content 
+Image content allows including visual information in messages:
+
+{
+  "type": "image",
+  "data": "base64-encoded-image-data",
+  "mimeType": "image/png"
+}
+
+The image data MUST be base64-encoded and include a valid MIME type. This enables multi-modal interactions where visual context is important.
+
+Embedded Resources 
+Embedded resources allow referencing server-side resources directly in messages:
+
+{
+  "type": "resource",
+  "resource": {
+    "uri": "resource://example",
+    "mimeType": "text/plain",
+    "text": "Resource content"
+  }
+}
+
+Resources can contain either text or binary (blob) data and MUST include:
+
+A valid resource URI
+The appropriate MIME type
+Either text content or base64-encoded blob data
+Embedded resources enable prompts to seamlessly incorporate server-managed content like documentation, code samples, or other reference materials directly into the conversation flow.
+
+Error Handling 
+Servers SHOULD return standard JSON-RPC errors for common failure cases:
+
+Invalid prompt name: -32602 (Invalid params)
+Missing required arguments: -32602 (Invalid params)
+Internal errors: -32603 (Internal error)
+Implementation Considerations 
+Servers SHOULD validate prompt arguments before processing
+Clients SHOULD handle pagination for large prompt lists
+Both parties SHOULD respect capability negotiation
+Security 
+Implementations MUST carefully validate all prompt inputs and outputs to prevent injection attacks or unauthorized access to resources.
+
+++++++++++++++++++++
+
+Resources
+Protocol Revision: 2024-11-05
+The Model Context Protocol (MCP) provides a standardized way for servers to expose resources to clients. Resources allow servers to share data that provides context to language models, such as files, database schemas, or application-specific information. Each resource is uniquely identified by a URI.
+
+User Interaction Model 
+Resources in MCP are designed to be application-driven, with host applications determining how to incorporate context based on their needs.
+
+For example, applications could:
+
+Expose resources through UI elements for explicit selection, in a tree or list view
+Allow the user to search through and filter available resources
+Implement automatic context inclusion, based on heuristics or the AI model’s selection
+Example of resource context picker
+
+However, implementations are free to expose resources through any interface pattern that suits their needs—the protocol itself does not mandate any specific user interaction model.
+
+Capabilities 
+Servers that support resources MUST declare the resources capability:
+
+{
+  "capabilities": {
+    "resources": {
+      "subscribe": true,
+      "listChanged": true
+    }
+  }
+}
+
+The capability supports two optional features:
+
+subscribe: whether the client can subscribe to be notified of changes to individual resources.
+listChanged: whether the server will emit notifications when the list of available resources changes.
+Both subscribe and listChanged are optional—servers can support neither, either, or both:
+
+{
+  "capabilities": {
+    "resources": {} // Neither feature supported
+  }
+}
+
+{
+  "capabilities": {
+    "resources": {
+      "subscribe": true // Only subscriptions supported
+    }
+  }
+}
+
+{
+  "capabilities": {
+    "resources": {
+      "listChanged": true // Only list change notifications supported
+    }
+  }
+}
+
+Protocol Messages 
+Listing Resources 
+To discover available resources, clients send a resources/list request. This operation supports pagination.
+
+Request:
+
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "resources/list",
+  "params": {
+    "cursor": "optional-cursor-value"
+  }
+}
+
+Response:
+
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "resources": [
+      {
+        "uri": "file:///project/src/main.rs",
+        "name": "main.rs",
+        "description": "Primary application entry point",
+        "mimeType": "text/x-rust"
+      }
+    ],
+    "nextCursor": "next-page-cursor"
+  }
+}
+
+Reading Resources 
+To retrieve resource contents, clients send a resources/read request:
+
+Request:
+
+{
+  "jsonrpc": "2.0",
+  "id": 2,
+  "method": "resources/read",
+  "params": {
+    "uri": "file:///project/src/main.rs"
+  }
+}
+
+Response:
+
+{
+  "jsonrpc": "2.0",
+  "id": 2,
+  "result": {
+    "contents": [
+      {
+        "uri": "file:///project/src/main.rs",
+        "mimeType": "text/x-rust",
+        "text": "fn main() {\n    println!(\"Hello world!\");\n}"
+      }
+    ]
+  }
+}
+
+Resource Templates 
+Resource templates allow servers to expose parameterized resources using URI templates. Arguments may be auto-completed through the completion API.
+
+Request:
+
+{
+  "jsonrpc": "2.0",
+  "id": 3,
+  "method": "resources/templates/list"
+}
+
+Response:
+
+{
+  "jsonrpc": "2.0",
+  "id": 3,
+  "result": {
+    "resourceTemplates": [
+      {
+        "uriTemplate": "file:///{path}",
+        "name": "Project Files",
+        "description": "Access files in the project directory",
+        "mimeType": "application/octet-stream"
+      }
+    ]
+  }
+}
+
+List Changed Notification 
+When the list of available resources changes, servers that declared the listChanged capability SHOULD send a notification:
+
+{
+  "jsonrpc": "2.0",
+  "method": "notifications/resources/list_changed"
+}
+
+Subscriptions 
+The protocol supports optional subscriptions to resource changes. Clients can subscribe to specific resources and receive notifications when they change:
+
+Subscribe Request:
+
+{
+  "jsonrpc": "2.0",
+  "id": 4,
+  "method": "resources/subscribe",
+  "params": {
+    "uri": "file:///project/src/main.rs"
+  }
+}
+
+Update Notification:
+
+{
+  "jsonrpc": "2.0",
+  "method": "notifications/resources/updated",
+  "params": {
+    "uri": "file:///project/src/main.rs"
+  }
+}
+
+Message Flow 
+Server
+Client
+Server
+Client
+Resource Discovery
+Resource Access
+Subscriptions
+Updates
+resources/list
+List of resources
+resources/read
+Resource contents
+resources/subscribe
+Subscription confirmed
+notifications/resources/updated
+resources/read
+Updated contents
+Data Types 
+Resource 
+A resource definition includes:
+
+uri: Unique identifier for the resource
+name: Human-readable name
+description: Optional description
+mimeType: Optional MIME type
+Resource Contents 
+Resources can contain either text or binary data:
+
+Text Content 
+{
+  "uri": "file:///example.txt",
+  "mimeType": "text/plain",
+  "text": "Resource content"
+}
+
+Binary Content 
+{
+  "uri": "file:///example.png",
+  "mimeType": "image/png",
+  "blob": "base64-encoded-data"
+}
+
+Common URI Schemes 
+The protocol defines several standard URI schemes. This list not exhaustive—implementations are always free to use additional, custom URI schemes.
+
+https:// 
+Used to represent a resource available on the web.
+
+Servers SHOULD use this scheme only when the client is able to fetch and load the resource directly from the web on its own—that is, it doesn’t need to read the resource via the MCP server.
+
+For other use cases, servers SHOULD prefer to use another URI scheme, or define a custom one, even if the server will itself be downloading resource contents over the internet.
+
+file:// 
+Used to identify resources that behave like a filesystem. However, the resources do not need to map to an actual physical filesystem.
+
+MCP servers MAY identify file:// resources with an XDG MIME type, like inode/directory, to represent non-regular files (such as directories) that don’t otherwise have a standard MIME type.
+
+git:// 
+Git version control integration.
+
+Error Handling 
+Servers SHOULD return standard JSON-RPC errors for common failure cases:
+
+Resource not found: -32002
+Internal errors: -32603
+Example error:
+
+{
+  "jsonrpc": "2.0",
+  "id": 5,
+  "error": {
+    "code": -32002,
+    "message": "Resource not found",
+    "data": {
+      "uri": "file:///nonexistent.txt"
+    }
+  }
+}
+
+Security Considerations 
+Servers MUST validate all resource URIs
+Access controls SHOULD be implemented for sensitive resources
+Binary data MUST be properly encoded
+Resource permissions SHOULD be checked before operations
+
++++++++++++++++++++++++++++
+
+Tools
+Protocol Revision: 2024-11-05
+The Model Context Protocol (MCP) allows servers to expose tools that can be invoked by language models. Tools enable models to interact with external systems, such as querying databases, calling APIs, or performing computations. Each tool is uniquely identified by a name and includes metadata describing its schema.
+
+User Interaction Model 
+Tools in MCP are designed to be model-controlled, meaning that the language model can discover and invoke tools automatically based on its contextual understanding and the user’s prompts.
+
+However, implementations are free to expose tools through any interface pattern that suits their needs—the protocol itself does not mandate any specific user interaction model.
+
+For trust & safety and security, there SHOULD always be a human in the loop with the ability to deny tool invocations.
+
+Applications SHOULD:
+
+Provide UI that makes clear which tools are being exposed to the AI model
+Insert clear visual indicators when tools are invoked
+Present confirmation prompts to the user for operations, to ensure a human is in the loop
+Capabilities 
+Servers that support tools MUST declare the tools capability:
+
+{
+  "capabilities": {
+    "tools": {
+      "listChanged": true
+    }
+  }
+}
+
+listChanged indicates whether the server will emit notifications when the list of available tools changes.
+
+Protocol Messages 
+Listing Tools 
+To discover available tools, clients send a tools/list request. This operation supports pagination.
+
+Request:
+
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/list",
+  "params": {
+    "cursor": "optional-cursor-value"
+  }
+}
+
+Response:
+
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "tools": [
+      {
+        "name": "get_weather",
+        "description": "Get current weather information for a location",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "location": {
+              "type": "string",
+              "description": "City name or zip code"
+            }
+          },
+          "required": ["location"]
+        }
+      }
+    ],
+    "nextCursor": "next-page-cursor"
+  }
+}
+
+Calling Tools 
+To invoke a tool, clients send a tools/call request:
+
+Request:
+
+{
+  "jsonrpc": "2.0",
+  "id": 2,
+  "method": "tools/call",
+  "params": {
+    "name": "get_weather",
+    "arguments": {
+      "location": "New York"
+    }
+  }
+}
+
+Response:
+
+{
+  "jsonrpc": "2.0",
+  "id": 2,
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Current weather in New York:\nTemperature: 72°F\nConditions: Partly cloudy"
+      }
+    ],
+    "isError": false
+  }
+}
+
+List Changed Notification 
+When the list of available tools changes, servers that declared the listChanged capability SHOULD send a notification:
+
+{
+  "jsonrpc": "2.0",
+  "method": "notifications/tools/list_changed"
+}
+
+Message Flow 
+Server
+Client
+LLM
+Server
+Client
+LLM
+Discovery
+Tool Selection
+Invocation
+Updates
+tools/list
+List of tools
+Select tool to use
+tools/call
+Tool result
+Process result
+tools/list_changed
+tools/list
+Updated tools
+Data Types 
+Tool 
+A tool definition includes:
+
+name: Unique identifier for the tool
+description: Human-readable description of functionality
+inputSchema: JSON Schema defining expected parameters
+Tool Result 
+Tool results can contain multiple content items of different types:
+
+Text Content 
+{
+  "type": "text",
+  "text": "Tool result text"
+}
+
+Image Content 
+{
+  "type": "image",
+  "data": "base64-encoded-data",
+  "mimeType": "image/png"
+}
+
+Embedded Resources 
+Resources MAY be embedded, to provide additional context or data, behind a URI that can be subscribed to or fetched again by the client later:
+
+{
+  "type": "resource",
+  "resource": {
+    "uri": "resource://example",
+    "mimeType": "text/plain",
+    "text": "Resource content"
+  }
+}
+
+Error Handling 
+Tools use two error reporting mechanisms:
+
+Protocol Errors: Standard JSON-RPC errors for issues like:
+
+Unknown tools
+Invalid arguments
+Server errors
+Tool Execution Errors: Reported in tool results with isError: true:
+
+API failures
+Invalid input data
+Business logic errors
+Example protocol error:
+
+{
+  "jsonrpc": "2.0",
+  "id": 3,
+  "error": {
+    "code": -32602,
+    "message": "Unknown tool: invalid_tool_name"
+  }
+}
+
+Example tool execution error:
+
+{
+  "jsonrpc": "2.0",
+  "id": 4,
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Failed to fetch weather data: API rate limit exceeded"
+      }
+    ],
+    "isError": true
+  }
+}
+
+Security Considerations 
+Servers MUST:
+
+Validate all tool inputs
+Implement proper access controls
+Rate limit tool invocations
+Sanitize tool outputs
+Clients SHOULD:
+
+Prompt for user confirmation on sensitive operations
+Show tool inputs to the user before calling the server, to avoid malicious or accidental data exfiltration
+Validate tool results before passing to LLM
+Implement timeouts for tool calls
+Log tool usage for audit purposes
+
+++++++++++++++++++++++++ Utilities
+
+Completion
+Protocol Revision: 2024-11-05
+The Model Context Protocol (MCP) provides a standardized way for servers to offer argument autocompletion suggestions for prompts and resource URIs. This enables rich, IDE-like experiences where users receive contextual suggestions while entering argument values.
+
+User Interaction Model 
+Completion in MCP is designed to support interactive user experiences similar to IDE code completion.
+
+For example, applications may show completion suggestions in a dropdown or popup menu as users type, with the ability to filter and select from available options.
+
+However, implementations are free to expose completion through any interface pattern that suits their needs—the protocol itself does not mandate any specific user interaction model.
+
+Protocol Messages 
+Requesting Completions 
+To get completion suggestions, clients send a completion/complete request specifying what is being completed through a reference type:
+
+Request:
+
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "completion/complete",
+  "params": {
+    "ref": {
+      "type": "ref/prompt",
+      "name": "code_review"
+    },
+    "argument": {
+      "name": "language",
+      "value": "py"
+    }
+  }
+}
+
+Response:
+
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "completion": {
+      "values": ["python", "pytorch", "pyside"],
+      "total": 10,
+      "hasMore": true
+    }
+  }
+}
+
+Reference Types 
+The protocol supports two types of completion references:
+
+Type	Description	Example
+ref/prompt	References a prompt by name	{"type": "ref/prompt", "name": "code_review"}
+ref/resource	References a resource URI	{"type": "ref/resource", "uri": "file:///{path}"}
+Completion Results 
+Servers return an array of completion values ranked by relevance, with:
+
+Maximum 100 items per response
+Optional total number of available matches
+Boolean indicating if additional results exist
+Message Flow 
+Server
+Client
+Server
+Client
+User types argument
+User continues typing
+completion/complete
+Completion suggestions
+completion/complete
+Refined suggestions
+Data Types 
+CompleteRequest 
+ref: A PromptReference or ResourceReference
+argument: Object containing:
+name: Argument name
+value: Current value
+CompleteResult 
+completion: Object containing:
+values: Array of suggestions (max 100)
+total: Optional total matches
+hasMore: Additional results flag
+Implementation Considerations 
+Servers SHOULD:
+
+Return suggestions sorted by relevance
+Implement fuzzy matching where appropriate
+Rate limit completion requests
+Validate all inputs
+Clients SHOULD:
+
+Debounce rapid completion requests
+Cache completion results where appropriate
+Handle missing or partial results gracefully
+Security 
+Implementations MUST:
+
+Validate all completion inputs
+Implement appropriate rate limiting
+Control access to sensitive suggestions
+Prevent completion-based information disclosure
+
+++++++++++++++++++++++++++++ 
+
+Logging
+Protocol Revision: 2024-11-05
+The Model Context Protocol (MCP) provides a standardized way for servers to send structured log messages to clients. Clients can control logging verbosity by setting minimum log levels, with servers sending notifications containing severity levels, optional logger names, and arbitrary JSON-serializable data.
+
+User Interaction Model 
+Implementations are free to expose logging through any interface pattern that suits their needs—the protocol itself does not mandate any specific user interaction model.
+
+Capabilities 
+Servers that emit log message notifications MUST declare the logging capability:
+
+{
+  "capabilities": {
+    "logging": {}
+  }
+}
+
+Log Levels 
+The protocol follows the standard syslog severity levels specified in RFC 5424:
+
+Level	Description	Example Use Case
+debug	Detailed debugging information	Function entry/exit points
+info	General informational messages	Operation progress updates
+notice	Normal but significant events	Configuration changes
+warning	Warning conditions	Deprecated feature usage
+error	Error conditions	Operation failures
+critical	Critical conditions	System component failures
+alert	Action must be taken immediately	Data corruption detected
+emergency	System is unusable	Complete system failure
+Protocol Messages 
+Setting Log Level 
+To configure the minimum log level, clients MAY send a logging/setLevel request:
+
+Request:
+
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "logging/setLevel",
+  "params": {
+    "level": "info"
+  }
+}
+
+Log Message Notifications 
+Servers send log messages using notifications/message notifications:
+
+{
+  "jsonrpc": "2.0",
+  "method": "notifications/message",
+  "params": {
+    "level": "error",
+    "logger": "database",
+    "data": {
+      "error": "Connection failed",
+      "details": {
+        "host": "localhost",
+        "port": 5432
+      }
+    }
+  }
+}
+
+Message Flow 
+Server
+Client
+Server
+Client
+Configure Logging
+Server Activity
+Level Change
+Only sends error level
+and above
+logging/setLevel (info)
+Empty Result
+notifications/message (info)
+notifications/message (warning)
+notifications/message (error)
+logging/setLevel (error)
+Empty Result
+Error Handling 
+Servers SHOULD return standard JSON-RPC errors for common failure cases:
+
+Invalid log level: -32602 (Invalid params)
+Configuration errors: -32603 (Internal error)
+Implementation Considerations 
+Servers SHOULD:
+
+Rate limit log messages
+Include relevant context in data field
+Use consistent logger names
+Remove sensitive information
+Clients MAY:
+
+Present log messages in the UI
+Implement log filtering/search
+Display severity visually
+Persist log messages
+Security 
+Log messages MUST NOT contain:
+
+Credentials or secrets
+Personal identifying information
+Internal system details that could aid attacks
+Implementations SHOULD:
+
+Rate limit messages
+Validate all data fields
+Control log access
+Monitor for sensitive content
+
++++++++++++++++++++++++++++
+
+Pagination
+Protocol Revision: 2024-11-05
+The Model Context Protocol (MCP) supports paginating list operations that may return large result sets. Pagination allows servers to yield results in smaller chunks rather than all at once.
+
+Pagination is especially important when connecting to external services over the internet, but also useful for local integrations to avoid performance issues with large data sets.
+
+Pagination Model 
+Pagination in MCP uses an opaque cursor-based approach, instead of numbered pages.
+
+The cursor is an opaque string token, representing a position in the result set
+Page size is determined by the server, and MAY NOT be fixed
+Response Format 
+Pagination starts when the server sends a response that includes:
+
+The current page of results
+An optional nextCursor field if more results exist
+{
+  "jsonrpc": "2.0",
+  "id": "123",
+  "result": {
+    "resources": [...],
+    "nextCursor": "eyJwYWdlIjogM30="
+  }
+}
+
+Request Format 
+After receiving a cursor, the client can continue paginating by issuing a request including that cursor:
+
+{
+  "jsonrpc": "2.0",
+  "method": "resources/list",
+  "params": {
+    "cursor": "eyJwYWdlIjogMn0="
+  }
+}
+
+Pagination Flow 
+Server
+Client
+Server
+Client
+loop
+[Pagination Loop]
+List Request (no cursor)
+Page of results + nextCursor
+List Request (with cursor)
+Operations Supporting Pagination 
+The following MCP operations support pagination:
+
+resources/list - List available resources
+resources/templates/list - List resource templates
+prompts/list - List available prompts
+tools/list - List available tools
+Implementation Guidelines 
+Servers SHOULD:
+
+Provide stable cursors
+Handle invalid cursors gracefully
+Clients SHOULD:
+
+Treat a missing nextCursor as the end of results
+Support both paginated and non-paginated flows
+Clients MUST treat cursors as opaque tokens:
+
+Don’t make assumptions about cursor format
+Don’t attempt to parse or modify cursors
+Don’t persist cursors across sessions
+Error Handling 
+Invalid cursors SHOULD result in an error with code -32602 (Invalid params).
+
+
+
+

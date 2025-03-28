@@ -1,0 +1,30 @@
+PROMPTS REQUIREMENTS (MCP 2024-11-05)
+
+Capabilities
+- MUST declare the "prompts" capability during initialization.
+- MUST include "listChanged" field in the prompts capability if listChanged notifications are supported.
+
+prompts/list
+- MUST support the "prompts/list" method.
+- SHOULD support pagination using an opaque "cursor".
+
+prompts/get
+- MUST support the "prompts/get" method to retrieve prompt content.
+- SHOULD validate prompt arguments before processing.
+- MAY support argument autocompletion using completion API.
+
+prompts/list_changed
+- SHOULD emit "prompts/list_changed" notification if "listChanged: true" was declared.
+
+Data Types
+- MUST include in each prompt: name (required), description (optional), arguments (optional).
+- MUST include for each argument: name, description, required.
+- MUST structure each prompt message with role ("user" or "assistant") and content.
+- MUST support the following content types:
+  - Text: type: "text", text: string
+  - Image: type: "image", data (base64), mimeType
+  - Resource: type: "resource", uri, mimeType, text or blob
+
+Error Handling
+- SHOULD return -32602 for invalid prompt name or missing arguments.
+- SHOULD return -32603 for internal errors.

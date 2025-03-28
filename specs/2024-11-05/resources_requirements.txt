@@ -1,0 +1,37 @@
+RESOURCES REQUIREMENTS (MCP 2024-11-05)
+
+Capabilities
+- MUST declare the "resources" capability.
+- MAY include "subscribe", "listChanged", both or neither.
+
+resources/list
+- MUST support "resources/list" for discovery.
+- SHOULD support pagination via cursor.
+
+resources/read
+- MUST support "resources/read" to return contents.
+
+resources/templates/list
+- MUST support this method if templates are exposed.
+
+resources/list_changed
+- SHOULD emit notification if "listChanged: true".
+
+resources/subscribe and notifications/resources/updated
+- MUST support both if "subscribe: true" is declared.
+
+Data Types
+- MUST include in each resource: uri (required), name (required), description (optional), mimeType (optional).
+- MUST return in "resources/read":
+  - text: mimeType and text
+  - blob: mimeType and base64-encoded blob
+
+Error Handling
+- SHOULD return -32002 for resource not found.
+- SHOULD return -32603 for internal error.
+
+Security
+- MUST validate resource URIs.
+- SHOULD implement access control.
+- MUST encode binary data properly.
+- SHOULD check permissions before serving.
