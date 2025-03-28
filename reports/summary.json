@@ -1,0 +1,113 @@
+{
+  "timestamp": "2025-03-28T18:32:05.058415",
+  "summary": {
+    "total": 10,
+    "passed": 10,
+    "failed": 0,
+    "skipped": 0,
+    "must_failures": 0,
+    "should_failures": 0
+  },
+  "results": [
+    {
+      "nodeid": "tests/test_prompts_get.py::test_prompts_get_returns_valid_messages",
+      "outcome": "PASS",
+      "feature": "prompts/get",
+      "level": "MUST",
+      "req_id": "PROMPTS-GET-3",
+      "description": "Server MUST return valid message structure",
+      "reason": null,
+      "duration": 0.005618800001684576
+    },
+    {
+      "nodeid": "tests/test_prompts_get.py::test_prompts_get_missing_argument_raises_error",
+      "outcome": "PASS",
+      "feature": "prompts/get",
+      "level": "MUST",
+      "req_id": "PROMPTS-GET-2",
+      "description": "Server MUST validate required arguments",
+      "reason": null,
+      "duration": 0.0045600999728776515
+    },
+    {
+      "nodeid": "tests/test_prompts_get.py::test_prompts_get_invalid_prompt_name",
+      "outcome": "PASS",
+      "feature": "prompts/get",
+      "level": "MUST",
+      "req_id": "PROMPTS-GET-1",
+      "description": "Server MUST validate prompt name exists",
+      "reason": null,
+      "duration": 0.0032016999903135
+    },
+    {
+      "nodeid": "tests/test_prompts_get.py::test_prompts_get_invalid_argument_type",
+      "outcome": "PASS",
+      "feature": "prompts/get",
+      "level": "MUST",
+      "req_id": "PROMPTS-GET-2",
+      "description": "Server MUST validate required arguments",
+      "reason": null,
+      "duration": 0.003522199986036867
+    },
+    {
+      "nodeid": "tests/test_prompts_get.py::test_prompts_get_content_type_validation",
+      "outcome": "PASS",
+      "feature": "prompts/get",
+      "level": "MUST",
+      "req_id": "PROMPTS-GET-3",
+      "description": "Server MUST return valid message structure",
+      "reason": null,
+      "duration": 0.0033728000125847757
+    },
+    {
+      "nodeid": "tests/test_prompts_list.py::test_prompts_list_basic",
+      "outcome": "PASS",
+      "feature": "prompts/list",
+      "level": "MUST",
+      "req_id": "PROMPTS-LIST-1",
+      "description": "Server MUST return a list of available prompts",
+      "reason": null,
+      "duration": 0.003036599955521524
+    },
+    {
+      "nodeid": "tests/test_prompts_list.py::test_prompts_list_pagination",
+      "outcome": "PASS",
+      "feature": "prompts/list",
+      "level": "SHOULD",
+      "req_id": "PROMPTS-LIST-3",
+      "description": "Server SHOULD support pagination",
+      "reason": null,
+      "duration": 0.005845799983944744
+    },
+    {
+      "nodeid": "tests/test_prompts_list.py::test_prompts_list_error_cases",
+      "outcome": "PASS",
+      "feature": "prompts/list",
+      "level": "MUST",
+      "req_id": "PROMPTS-LIST-2",
+      "description": "Each prompt MUST have a name field",
+      "reason": null,
+      "duration": 0.006430300010833889
+    },
+    {
+      "nodeid": "tests/test_prompts_list_changed.py::test_prompts_list_changed_capability",
+      "outcome": "PASS",
+      "feature": "prompts/list_changed",
+      "level": "SHOULD",
+      "req_id": "PROMPTS-LIST-CHANGED-1",
+      "description": "Server SHOULD declare listChanged capability",
+      "reason": null,
+      "duration": 0.014334300009068102
+    },
+    {
+      "nodeid": "tests/test_prompts_list_changed.py::test_prompts_list_changed_detects_change",
+      "outcome": "PASS",
+      "feature": "prompts/list_changed",
+      "level": "SHOULD",
+      "req_id": "PROMPTS-LIST-CHANGED-2",
+      "description": "Server SHOULD emit notification when list changes",
+      "reason": null,
+      "duration": 5.020189500006381
+    }
+  ]
+}

@@ -24,7 +24,7 @@ logs
 .venv_old/
 orch/
 .vscode/
-owlai.egg-info/
+*.egg-info/
 dist/
 build/
 cleanenv*/

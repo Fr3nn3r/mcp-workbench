@@ -7,9 +7,18 @@ requires-python = ">=3.8"
 dependencies = [
     "pathlib",
     "typing",
-    "argparse"
+    "argparse",
+    "pydantic>=2.0.0",
+    "pytest>=7.0.0",
+    "fastapi>=0.100.0",
+    "uvicorn>=0.22.0"
 ]
 
 [build-system]
 requires = ["setuptools>=42.0.0", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-v --tb=short"
