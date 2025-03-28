@@ -1,14 +1,44 @@
 {
-  "timestamp": "2025-03-28T18:32:05.058415",
+  "timestamp": "2025-03-28T19:24:17.017250",
   "summary": {
-    "total": 10,
-    "passed": 10,
-    "failed": 0,
+    "total": 35,
+    "passed": 25,
+    "failed": 10,
     "skipped": 0,
-    "must_failures": 0,
-    "should_failures": 0
+    "must_failures": 6,
+    "should_failures": 4
   },
   "results": [
+    {
+      "nodeid": "tests/test_completion.py::test_prompt_argument_completion",
+      "outcome": "FAIL",
+      "feature": "completion/complete",
+      "level": "MUST",
+      "req_id": "COMPLETION-1",
+      "description": null,
+      "reason": "<ExceptionInfo KeyError('result') tblen=28>",
+      "duration": 0.0028615000192075968
+    },
+    {
+      "nodeid": "tests/test_completion.py::test_resource_uri_completion",
+      "outcome": "FAIL",
+      "feature": "completion/complete",
+      "level": "MUST",
+      "req_id": "COMPLETION-2",
+      "description": null,
+      "reason": "<ExceptionInfo KeyError('result') tblen=28>",
+      "duration": 0.0019788999925367534
+    },
+    {
+      "nodeid": "tests/test_completion.py::test_completion_error_cases",
+      "outcome": "FAIL",
+      "feature": "completion/complete",
+      "level": "MUST",
+      "req_id": "COMPLETION-3",
+      "description": null,
+      "reason": "<ExceptionInfo DID NOT RAISE <class 'mcp.client.JSONRPCError'> tblen=30>",
+      "duration": 0.004273700003977865
+    },
     {
       "nodeid": "tests/test_prompts_get.py::test_prompts_get_returns_valid_messages",
       "outcome": "PASS",
@@ -17,7 +47,7 @@
       "req_id": "PROMPTS-GET-3",
       "description": "Server MUST return valid message structure",
       "reason": null,
-      "duration": 0.005618800001684576
+      "duration": 0.0012684999965131283
     },
     {
       "nodeid": "tests/test_prompts_get.py::test_prompts_get_missing_argument_raises_error",
@@ -27,7 +57,7 @@
       "req_id": "PROMPTS-GET-2",
       "description": "Server MUST validate required arguments",
       "reason": null,
-      "duration": 0.0045600999728776515
+      "duration": 0.002139599993824959
     },
     {
       "nodeid": "tests/test_prompts_get.py::test_prompts_get_invalid_prompt_name",
@@ -37,7 +67,7 @@
       "req_id": "PROMPTS-GET-1",
       "description": "Server MUST validate prompt name exists",
       "reason": null,
-      "duration": 0.0032016999903135
+      "duration": 0.0020339000038802624
     },
     {
       "nodeid": "tests/test_prompts_get.py::test_prompts_get_invalid_argument_type",
@@ -47,7 +77,7 @@
       "req_id": "PROMPTS-GET-2",
       "description": "Server MUST validate required arguments",
       "reason": null,
-      "duration": 0.003522199986036867
+      "duration": 0.00136900000507012
     },
     {
       "nodeid": "tests/test_prompts_get.py::test_prompts_get_content_type_validation",
@@ -57,7 +87,7 @@
       "req_id": "PROMPTS-GET-3",
       "description": "Server MUST return valid message structure",
       "reason": null,
-      "duration": 0.0033728000125847757
+      "duration": 0.001193300005979836
     },
     {
       "nodeid": "tests/test_prompts_list.py::test_prompts_list_basic",
@@ -67,7 +97,7 @@
       "req_id": "PROMPTS-LIST-1",
       "description": "Server MUST return a list of available prompts",
       "reason": null,
-      "duration": 0.003036599955521524
+      "duration": 0.0013488999684341252
     },
     {
       "nodeid": "tests/test_prompts_list.py::test_prompts_list_pagination",
@@ -77,7 +107,7 @@
       "req_id": "PROMPTS-LIST-3",
       "description": "Server SHOULD support pagination",
       "reason": null,
-      "duration": 0.005845799983944744
+      "duration": 0.002621400053612888
     },
     {
       "nodeid": "tests/test_prompts_list.py::test_prompts_list_error_cases",
@@ -87,7 +117,7 @@
       "req_id": "PROMPTS-LIST-2",
       "description": "Each prompt MUST have a name field",
       "reason": null,
-      "duration": 0.006430300010833889
+      "duration": 0.0020564000005833805
     },
     {
       "nodeid": "tests/test_prompts_list_changed.py::test_prompts_list_changed_capability",
@@ -97,7 +127,7 @@
       "req_id": "PROMPTS-LIST-CHANGED-1",
       "description": "Server SHOULD declare listChanged capability",
       "reason": null,
-      "duration": 0.014334300009068102
+      "duration": 0.0012597999884746969
     },
     {
       "nodeid": "tests/test_prompts_list_changed.py::test_prompts_list_changed_detects_change",
@@ -107,7 +137,227 @@
       "req_id": "PROMPTS-LIST-CHANGED-2",
       "description": "Server SHOULD emit notification when list changes",
       "reason": null,
-      "duration": 5.020189500006381
+      "duration": 5.005337099952158
+    },
+    {
+      "nodeid": "tests/test_resources_list.py::test_resources_list_returns_valid_structure",
+      "outcome": "PASS",
+      "feature": "resources/list",
+      "level": "MUST",
+      "req_id": "RESOURCES-LIST-1",
+      "description": "Server MUST return a valid list of resources",
+      "reason": null,
+      "duration": 0.001677700027357787
+    },
+    {
+      "nodeid": "tests/test_resources_list.py::test_resources_list_pagination",
+      "outcome": "PASS",
+      "feature": "resources/list",
+      "level": "SHOULD",
+      "req_id": "RESOURCES-LIST-2",
+      "description": "Server SHOULD support pagination",
+      "reason": null,
+      "duration": 0.003320200019516051
+    },
+    {
+      "nodeid": "tests/test_resources_list.py::test_resources_list_error_cases",
+      "outcome": "PASS",
+      "feature": "resources/list",
+      "level": "MUST",
+      "req_id": "RESOURCES-LIST-3",
+      "description": "Each resource MUST have required fields",
+      "reason": null,
+      "duration": 0.0027605999493971467
+    },
+    {
+      "nodeid": "tests/test_resources_list_changed.py::test_resources_list_changed_capability",
+      "outcome": "PASS",
+      "feature": "resources/list_changed",
+      "level": "SHOULD",
+      "req_id": "RESOURCES-LIST-CHANGED-1",
+      "description": "Server SHOULD declare listChanged capability",
+      "reason": null,
+      "duration": 0.0017849999712780118
+    },
+    {
+      "nodeid": "tests/test_resources_list_changed.py::test_resources_list_changed_detects_change",
+      "outcome": "PASS",
+      "feature": "resources/list_changed",
+      "level": "SHOULD",
+      "req_id": "RESOURCES-LIST-CHANGED-2",
+      "description": "Server SHOULD emit notification when list changes",
+      "reason": null,
+      "duration": 5.004947500012349
+    },
+    {
+      "nodeid": "tests/test_resources_read.py::test_resources_read_returns_content",
+      "outcome": "PASS",
+      "feature": "resources/read",
+      "level": "MUST",
+      "req_id": "RESOURCES-READ-1",
+      "description": "Server MUST return valid content structure",
+      "reason": null,
+      "duration": 0.0026076000067405403
+    },
+    {
+      "nodeid": "tests/test_resources_read.py::test_resources_read_mime_type_matches",
+      "outcome": "PASS",
+      "feature": "resources/read",
+      "level": "MUST",
+      "req_id": "RESOURCES-READ-2",
+      "description": "Content MIME type MUST match listing",
+      "reason": null,
+      "duration": 0.002535399980843067
+    },
+    {
+      "nodeid": "tests/test_resources_read.py::test_resources_read_error_cases",
+      "outcome": "PASS",
+      "feature": "resources/read",
+      "level": "MUST",
+      "req_id": "RESOURCES-READ-3",
+      "description": "Server MUST handle errors correctly",
+      "reason": null,
+      "duration": 0.003319400013424456
+    },
+    {
+      "nodeid": "tests/test_resources_subscribe.py::test_resources_subscribe_capability",
+      "outcome": "PASS",
+      "feature": "resources/subscribe",
+      "level": "SHOULD",
+      "req_id": "RESOURCES-SUBSCRIBE-1",
+      "description": "Server SHOULD declare subscribe capability",
+      "reason": null,
+      "duration": 0.0011950000189244747
+    },
+    {
+      "nodeid": "tests/test_resources_subscribe.py::test_resources_subscribe_lifecycle",
+      "outcome": "PASS",
+      "feature": "resources/subscribe",
+      "level": "SHOULD",
+      "req_id": "RESOURCES-SUBSCRIBE-2",
+      "description": "Server SHOULD handle subscription lifecycle",
+      "reason": null,
+      "duration": 5.007695399981458
+    },
+    {
+      "nodeid": "tests/test_resources_subscribe.py::test_resources_subscribe_error_cases",
+      "outcome": "PASS",
+      "feature": "resources/subscribe",
+      "level": "MUST",
+      "req_id": "RESOURCES-SUBSCRIBE-3",
+      "description": "Server MUST handle subscription errors",
+      "reason": null,
+      "duration": 0.006303100031800568
+    },
+    {
+      "nodeid": "tests/test_resources_templates.py::test_resources_templates_list",
+      "outcome": "PASS",
+      "feature": "resources/templates",
+      "level": "MUST",
+      "req_id": "RESOURCES-TEMPLATES-1",
+      "description": "Server MUST return valid template structure",
+      "reason": null,
+      "duration": 0.0019547000410966575
+    },
+    {
+      "nodeid": "tests/test_resources_templates.py::test_resources_templates_uri_format",
+      "outcome": "PASS",
+      "feature": "resources/templates",
+      "level": "MUST",
+      "req_id": "RESOURCES-TEMPLATES-2",
+      "description": "Template URIs MUST follow correct format",
+      "reason": null,
+      "duration": 0.0015456000110134482
+    },
+    {
+      "nodeid": "tests/test_resources_templates.py::test_resources_templates_mime_types",
+      "outcome": "PASS",
+      "feature": "resources/templates",
+      "level": "SHOULD",
+      "req_id": "RESOURCES-TEMPLATES-3",
+      "description": "Template MIME types SHOULD be valid",
+      "reason": null,
+      "duration": 0.0015064000035636127
+    },
+    {
+      "nodeid": "tests/test_tools_call.py::test_tools_call_executes_successfully",
+      "outcome": "FAIL",
+      "feature": "tools/call",
+      "level": "MUST",
+      "req_id": "TOOLS-CALL-1",
+      "description": null,
+      "reason": "<ExceptionInfo KeyError('result') tblen=28>",
+      "duration": 0.0011286999797448516
+    },
+    {
+      "nodeid": "tests/test_tools_call.py::test_tools_call_error_cases",
+      "outcome": "FAIL",
+      "feature": "tools/call",
+      "level": "MUST",
+      "req_id": "TOOLS-CALL-2",
+      "description": null,
+      "reason": "<ExceptionInfo KeyError('result') tblen=28>",
+      "duration": 0.002682099991943687
+    },
+    {
+      "nodeid": "tests/test_tools_call.py::test_tools_call_execution_error",
+      "outcome": "FAIL",
+      "feature": "tools/call",
+      "level": "SHOULD",
+      "req_id": "TOOLS-CALL-3",
+      "description": null,
+      "reason": "<ExceptionInfo KeyError('result') tblen=28>",
+      "duration": 0.002154499990865588
+    },
+    {
+      "nodeid": "tests/test_tools_list.py::test_tools_list_returns_valid_tools",
+      "outcome": "FAIL",
+      "feature": "tools/list",
+      "level": "MUST",
+      "req_id": "TOOLS-LIST-1",
+      "description": null,
+      "reason": "<ExceptionInfo KeyError('result') tblen=28>",
+      "duration": 0.0020201000152155757
+    },
+    {
+      "nodeid": "tests/test_tools_list.py::test_tools_list_pagination",
+      "outcome": "FAIL",
+      "feature": "tools/list",
+      "level": "SHOULD",
+      "req_id": "TOOLS-LIST-2",
+      "description": null,
+      "reason": "<ExceptionInfo KeyError('result') tblen=28>",
+      "duration": 0.0014291999978013337
+    },
+    {
+      "nodeid": "tests/test_tools_list.py::test_tools_list_error_cases",
+      "outcome": "PASS",
+      "feature": "tools/list",
+      "level": "MUST",
+      "req_id": "TOOLS-LIST-3",
+      "description": null,
+      "reason": null,
+      "duration": 0.0012236000038683414
+    },
+    {
+      "nodeid": "tests/test_tools_list_changed.py::test_tools_list_changed_capability",
+      "outcome": "FAIL",
+      "feature": "tools/list_changed",
+      "level": "SHOULD",
+      "req_id": "TOOLS-LIST-CHANGED-1",
+      "description": null,
+      "reason": "<ExceptionInfo KeyError('result') tblen=28>",
+      "duration": 0.001641899987589568
+    },
+    {
+      "nodeid": "tests/test_tools_list_changed.py::test_tools_list_changed_detects_change",
+      "outcome": "FAIL",
+      "feature": "tools/list_changed",
+      "level": "SHOULD",
+      "req_id": "TOOLS-LIST-CHANGED-2",
+      "description": null,
+      "reason": "<ExceptionInfo KeyError('result') tblen=28>",
+      "duration": 0.0016210000030696392
     }
   ]
 }
