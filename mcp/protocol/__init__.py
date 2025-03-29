@@ -12,6 +12,9 @@ from mcp.protocol.schema import (
     ResourcesReadResult,
     ResourceTemplate,
     ResourcesTemplatesListResult,
+    Tool,
+    ToolsListResult,
+    ToolCallResult,
 )
 
 __all__ = [
@@ -28,4 +31,7 @@ __all__ = [
     "ResourcesReadResult",
     "ResourceTemplate",
     "ResourcesTemplatesListResult",
+    "Tool",
+    "ToolsListResult",
+    "ToolCallResult",
 ]

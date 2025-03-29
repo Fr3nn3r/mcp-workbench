@@ -83,3 +83,21 @@ class ResourceTemplate(BaseModel):
 class ResourcesTemplatesListResult(BaseModel):
     resourceTemplates: List[ResourceTemplate]
     nextCursor: Optional[str] = None
+
+
+# Models for tools/list
+class Tool(BaseModel):
+    name: str
+    description: str
+    inputSchema: dict
+
+
+class ToolsListResult(BaseModel):
+    tools: List[Tool]
+    nextCursor: Optional[str] = None
+
+
+# Models for tools/call
+class ToolCallResult(BaseModel):
+    content: List[dict]  # allow flexible type (text/image/resource)
+    isError: Optional[bool] = False
