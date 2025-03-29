@@ -1,0 +1,42 @@
+name: MCP Compliance Tests
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.10"]
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .
+          pip install -e .[dev]
+      
+      - name: Start mock MCP server for testing
+        run: |
+          # Start a mock server for testing (implementation depends on your project)
+          # This is a placeholder - replace with actual commands to start your test server
+          echo "Starting mock MCP server for testing"
+          # python -m mcp.mock_server --port 8000 &
+          # sleep 5  # Wait for server to start
+      
+      - name: Run MCP workbench
+        run: |
+          # Run tests against mock server
+          # If you have a mock server, uncomment the next line:
+          # mcp-check --server-url http://localhost:8000 --spec-version 2024-11-05 --level MUST
+          
+          # For now, just run pytest directly to test the workbench itself
+          pytest tests/ 
