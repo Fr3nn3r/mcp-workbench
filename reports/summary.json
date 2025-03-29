@@ -1,0 +1,733 @@
+{
+  "summary": {
+    "total_tests": 57,
+    "passed": 57,
+    "failed": 0,
+    "skipped": 0,
+    "must_failures": 0
+  },
+  "features": {
+    "completion/complete": [
+      {
+        "test": "tests/test_completion_prompt.py::test_prompt_argument_completion_returns_suggestions",
+        "feature": "completion/complete",
+        "level": "MUST",
+        "outcome": "PASS"
+      },
+      {
+        "test": "tests/test_completion_prompt.py::test_prompt_argument_completion_invalid_prompt",
+        "feature": "completion/complete",
+        "level": "MUST",
+        "outcome": "PASS"
+      },
+      {
+        "test": "tests/test_completion_prompt.py::test_prompt_argument_completion_invalid_argument",
+        "feature": "completion/complete",
+        "level": "MUST",
+        "outcome": "PASS"
+      },
+      {
+        "test": "tests/test_tools_completion_smoke.py::test_prompt_argument_completion_supported",
+        "feature": "completion/complete",
+        "level": "MUST",
+        "outcome": "PASS"
+      },
+      {
+        "test": "tests/test_tools_completion_smoke.py::test_resource_uri_completion_supported",
+        "feature": "completion/complete",
+        "level": "SHOULD",
+        "outcome": "PASS"
+      }
+    ],
+    "security/sanitization": [
+      {
+        "test": "tests/test_injection_protection.py::test_tools_call_does_not_echo_html",
+        "feature": "security/sanitization",
+        "level": "SHOULD",
+        "outcome": "PASS"
+      },
+      {
+        "test": "tests/test_injection_protection.py::test_tools_call_sanitizes_dangerous_attributes",
+        "feature": "security/sanitization",
+        "level": "SHOULD",
+        "outcome": "PASS"
+      },
+      {
+        "test": "tests/test_injection_protection.py::test_prompts_get_rejects_script_injection",
+        "feature": "security/sanitization",
+        "level": "SHOULD",
+        "outcome": "PASS"
+      },
+      {
+        "test": "tests/test_injection_protection.py::test_prompts_get_sanitizes_sql_injection",
+        "feature": "security/sanitization",
+        "level": "SHOULD",
+        "outcome": "PASS"
+      },
+      {
+        "test": "tests/test_injection_protection.py::test_tools_call_handles_unicode_safely",
+        "feature": "security/sanitization",
+        "level": "SHOULD",
+        "outcome": "PASS"
+      }
+    ],
+    "jsonrpc/validation": [
+      {
+        "test": "tests/test_jsonrpc_errors.py::test_invalid_jsonrpc_version_fails",
+        "feature": "jsonrpc/validation",
+        "level": "SHOULD",
+        "outcome": "PASS"
+      },
+      {
+        "test": "tests/test_jsonrpc_errors.py::test_missing_method_field_fails",
+        "feature": "jsonrpc/validation",
+        "level": "SHOULD",
+        "outcome": "PASS"
+      },
+      {
+        "test": "tests/test_jsonrpc_errors.py::test_invalid_payload_format_fails",
+        "feature": "jsonrpc/validation",
+        "level": "SHOULD",
+        "outcome": "PASS"
+      },
+      {
+        "test": "tests/test_jsonrpc_errors.py::test_wrong_method_type_fails",
+        "feature": "jsonrpc/validation",
+        "level": "SHOULD",
+        "outcome": "PASS"
+      },
+      {
+        "test": "tests/test_jsonrpc_errors.py::test_missing_jsonrpc_field_fails",
+        "feature": "jsonrpc/validation",
+        "level": "SHOULD",
+        "outcome": "PASS"
+      }
+    ],
+    "prompts/get": [
+      {
+        "test": "tests/test_prompts_fuzzing.py::test_prompts_get_argument_fuzzing",
+        "feature": "prompts/get",
+        "level": "SHOULD",
+        "outcome": "PASS"
+      },
+      {
+        "test": "tests/test_prompts_fuzzing.py::test_prompts_get_extra_arguments",
+        "feature": "prompts/get",
+        "level": "SHOULD",
+        "outcome": "PASS"
+      },
+      {
+        "test": "tests/test_prompts_fuzzing.py::test_prompts_get_wrong_argument_types",
+        "feature": "prompts/get",
+        "level": "SHOULD",
+        "outcome": "PASS"
+      },
+      {
+        "test": "tests/test_prompts_get.py::test_prompts_get_returns_valid_prompt",
+        "feature": "prompts/get",
+        "level": "MUST",
+        "outcome": "PASS"
+      },
+      {
+        "test": "tests/test_prompts_get.py::test_prompts_get_fails_on_missing_required_arg",
+        "feature": "prompts/get",
+        "level": "MUST",
+        "outcome": "PASS"
+      },
+      {
+        "test": "tests/test_prompts_get.py::test_prompts_get_fails_on_invalid_prompt_name",
+        "feature": "prompts/get",
+        "level": "MUST",
+        "outcome": "PASS"
+      },
+      {
+        "test": "tests/test_prompts_get.py::test_prompts_get_internal_error_fails",
+        "feature": "prompts/get",
+        "level": "SHOULD",
+        "outcome": "PASS"
+      },
+      {
+        "test": "tests/test_prompts_get.py::test_prompts_get_rejects_injection_strings",
+        "feature": "prompts/get",
+        "level": "SHOULD",
+        "outcome": "PASS"
+      }
+    ],
+    "prompts": [
+      {
+        "test": "tests/test_prompts_get.py::test_prompts_capability_declared",
+        "feature": "prompts",
+        "level": "MUST",
+        "outcome": "PASS"
+      }
+    ],
+    "prompts/list": [
+      {
+        "test": "tests/test_prompts_list.py::test_prompts_list_returns_valid_structure",
+        "feature": "prompts/list",
+        "level": "MUST",
+        "outcome": "PASS"
+      }
+    ],
+    "prompts/list_changed": [
+      {
+        "test": "tests/test_prompts_list_changed.py::test_prompts_list_changed_detects_update",
+        "feature": "prompts/list_changed",
+        "level": "SHOULD",
+        "outcome": "PASS"
+      }
+    ],
+    "resources/list": [
+      {
+        "test": "tests/test_resources_list.py::test_resources_list_returns_valid_structure",
+        "feature": "resources/list",
+        "level": "MUST",
+        "outcome": "PASS"
+      },
+      {
+        "test": "tests/test_resources_smoke.py::test_resources_list_responds",
+        "feature": "resources/list",
+        "level": "MUST",
+        "outcome": "PASS"
+      }
+    ],
+    "resources/list_changed": [
+      {
+        "test": "tests/test_resources_list_changed.py::test_resources_list_changed_detects_update",
+        "feature": "resources/list_changed",
+        "level": "SHOULD",
+        "outcome": "PASS"
+      },
+      {
+        "test": "tests/test_resources_smoke.py::test_resources_list_changed_supported",
+        "feature": "resources/list_changed",
+        "level": "SHOULD",
+        "outcome": "PASS"
+      }
+    ],
+    "resources/read": [
+      {
+        "test": "tests/test_resources_read.py::test_resources_read_returns_text_or_blob",
+        "feature": "resources/read",
+        "level": "MUST",
+        "outcome": "PASS"
+      },
+      {
+        "test": "tests/test_resources_read_errors.py::test_resources_read_nonexistent_uri_fails",
+        "feature": "resources/read",
+        "level": "SHOULD",
+        "outcome": "PASS"
+      },
+      {
+        "test": "tests/test_resources_read_errors.py::test_resources_read_missing_uri_param_fails",
+        "feature": "resources/read",
+        "level": "MUST",
+        "outcome": "PASS"
+      },
+      {
+        "test": "tests/test_resources_smoke.py::test_resources_read_returns_content",
+        "feature": "resources/read",
+        "level": "MUST",
+        "outcome": "PASS"
+      }
+    ],
+    "resources/templates/list": [
+      {
+        "test": "tests/test_resources_smoke.py::test_resources_templates_list",
+        "feature": "resources/templates/list",
+        "level": "MUST",
+        "outcome": "PASS"
+      },
+      {
+        "test": "tests/test_resources_templates.py::test_resources_templates_are_valid",
+        "feature": "resources/templates/list",
+        "level": "MUST",
+        "outcome": "PASS"
+      }
+    ],
+    "resources/subscribe": [
+      {
+        "test": "tests/test_resources_smoke.py::test_resources_subscribe_supported",
+        "feature": "resources/subscribe",
+        "level": "SHOULD",
+        "outcome": "PASS"
+      },
+      {
+        "test": "tests/test_resources_subscribe.py::test_resources_subscribe_declared",
+        "feature": "resources/subscribe",
+        "level": "SHOULD",
+        "outcome": "PASS"
+      }
+    ],
+    "spec/version": [
+      {
+        "test": "tests/test_spec_version.py::test_spec_version_is_supported",
+        "feature": "spec/version",
+        "level": "MUST",
+        "outcome": "PASS"
+      }
+    ],
+    "spec/features": [
+      {
+        "test": "tests/test_spec_version.py::test_spec_features_are_defined",
+        "feature": "spec/features",
+        "level": "MUST",
+        "outcome": "PASS"
+      }
+    ],
+    "tools/call": [
+      {
+        "test": "tests/test_tools_call.py::test_tools_call_works_with_valid_input",
+        "feature": "tools/call",
+        "level": "MUST",
+        "outcome": "PASS"
+      },
+      {
+        "test": "tests/test_tools_call.py::test_tools_call_missing_required_args_fails",
+        "feature": "tools/call",
+        "level": "MUST",
+        "outcome": "PASS"
+      },
+      {
+        "test": "tests/test_tools_call.py::test_tools_call_invalid_tool_name_fails",
+        "feature": "tools/call",
+        "level": "MUST",
+        "outcome": "PASS"
+      },
+      {
+        "test": "tests/test_tools_call.py::test_tools_call_access_control_fails",
+        "feature": "tools/call",
+        "level": "SHOULD",
+        "outcome": "PASS"
+      },
+      {
+        "test": "tests/test_tools_call.py::test_tools_call_rate_limit",
+        "feature": "tools/call",
+        "level": "SHOULD",
+        "outcome": "PASS"
+      },
+      {
+        "test": "tests/test_tools_call.py::test_tools_call_output_sanitization",
+        "feature": "tools/call",
+        "level": "SHOULD",
+        "outcome": "PASS"
+      },
+      {
+        "test": "tests/test_tools_call_errors.py::test_tools_call_returns_error_flag",
+        "feature": "tools/call",
+        "level": "SHOULD",
+        "outcome": "PASS"
+      },
+      {
+        "test": "tests/test_tools_call_errors.py::test_tools_call_error_content_is_valid",
+        "feature": "tools/call",
+        "level": "MUST",
+        "outcome": "PASS"
+      },
+      {
+        "test": "tests/test_tools_completion_smoke.py::test_tools_call_accepts_valid_input",
+        "feature": "tools/call",
+        "level": "MUST",
+        "outcome": "PASS"
+      }
+    ],
+    "tools/list": [
+      {
+        "test": "tests/test_tools_completion_smoke.py::test_tools_list_responds",
+        "feature": "tools/list",
+        "level": "MUST",
+        "outcome": "PASS"
+      },
+      {
+        "test": "tests/test_tools_list.py::test_tools_list_returns_valid_tools",
+        "feature": "tools/list",
+        "level": "MUST",
+        "outcome": "PASS"
+      }
+    ],
+    "tools/list_changed": [
+      {
+        "test": "tests/test_tools_completion_smoke.py::test_tools_list_changed_supported",
+        "feature": "tools/list_changed",
+        "level": "SHOULD",
+        "outcome": "PASS"
+      },
+      {
+        "test": "tests/test_tools_list_changed.py::test_tools_list_changed_notification_polling",
+        "feature": "tools/list_changed",
+        "level": "SHOULD",
+        "outcome": "PASS"
+      }
+    ],
+    "security/input_validation": [
+      {
+        "test": "tests/test_tools_fuzzing.py::test_tools_call_argument_fuzzing",
+        "feature": "security/input_validation",
+        "level": "SHOULD",
+        "outcome": "PASS"
+      },
+      {
+        "test": "tests/test_tools_fuzzing.py::test_tools_call_extra_arguments",
+        "feature": "security/input_validation",
+        "level": "SHOULD",
+        "outcome": "PASS"
+      },
+      {
+        "test": "tests/test_tools_fuzzing.py::test_tools_call_wrong_argument_types",
+        "feature": "security/input_validation",
+        "level": "SHOULD",
+        "outcome": "PASS"
+      },
+      {
+        "test": "tests/test_tools_fuzzing.py::test_tools_call_large_inputs",
+        "feature": "security/input_validation",
+        "level": "SHOULD",
+        "outcome": "PASS"
+      }
+    ]
+  },
+  "tests": [
+    {
+      "test": "tests/test_completion_prompt.py::test_prompt_argument_completion_returns_suggestions",
+      "feature": "completion/complete",
+      "level": "MUST",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_completion_prompt.py::test_prompt_argument_completion_invalid_prompt",
+      "feature": "completion/complete",
+      "level": "MUST",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_completion_prompt.py::test_prompt_argument_completion_invalid_argument",
+      "feature": "completion/complete",
+      "level": "MUST",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_injection_protection.py::test_tools_call_does_not_echo_html",
+      "feature": "security/sanitization",
+      "level": "SHOULD",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_injection_protection.py::test_tools_call_sanitizes_dangerous_attributes",
+      "feature": "security/sanitization",
+      "level": "SHOULD",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_injection_protection.py::test_prompts_get_rejects_script_injection",
+      "feature": "security/sanitization",
+      "level": "SHOULD",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_injection_protection.py::test_prompts_get_sanitizes_sql_injection",
+      "feature": "security/sanitization",
+      "level": "SHOULD",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_injection_protection.py::test_tools_call_handles_unicode_safely",
+      "feature": "security/sanitization",
+      "level": "SHOULD",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_jsonrpc_errors.py::test_invalid_jsonrpc_version_fails",
+      "feature": "jsonrpc/validation",
+      "level": "SHOULD",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_jsonrpc_errors.py::test_missing_method_field_fails",
+      "feature": "jsonrpc/validation",
+      "level": "SHOULD",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_jsonrpc_errors.py::test_invalid_payload_format_fails",
+      "feature": "jsonrpc/validation",
+      "level": "SHOULD",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_jsonrpc_errors.py::test_wrong_method_type_fails",
+      "feature": "jsonrpc/validation",
+      "level": "SHOULD",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_jsonrpc_errors.py::test_missing_jsonrpc_field_fails",
+      "feature": "jsonrpc/validation",
+      "level": "SHOULD",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_prompts_fuzzing.py::test_prompts_get_argument_fuzzing",
+      "feature": "prompts/get",
+      "level": "SHOULD",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_prompts_fuzzing.py::test_prompts_get_extra_arguments",
+      "feature": "prompts/get",
+      "level": "SHOULD",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_prompts_fuzzing.py::test_prompts_get_wrong_argument_types",
+      "feature": "prompts/get",
+      "level": "SHOULD",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_prompts_get.py::test_prompts_get_returns_valid_prompt",
+      "feature": "prompts/get",
+      "level": "MUST",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_prompts_get.py::test_prompts_get_fails_on_missing_required_arg",
+      "feature": "prompts/get",
+      "level": "MUST",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_prompts_get.py::test_prompts_get_fails_on_invalid_prompt_name",
+      "feature": "prompts/get",
+      "level": "MUST",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_prompts_get.py::test_prompts_get_internal_error_fails",
+      "feature": "prompts/get",
+      "level": "SHOULD",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_prompts_get.py::test_prompts_capability_declared",
+      "feature": "prompts",
+      "level": "MUST",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_prompts_get.py::test_prompts_get_rejects_injection_strings",
+      "feature": "prompts/get",
+      "level": "SHOULD",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_prompts_list.py::test_prompts_list_returns_valid_structure",
+      "feature": "prompts/list",
+      "level": "MUST",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_prompts_list_changed.py::test_prompts_list_changed_detects_update",
+      "feature": "prompts/list_changed",
+      "level": "SHOULD",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_resources_list.py::test_resources_list_returns_valid_structure",
+      "feature": "resources/list",
+      "level": "MUST",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_resources_list_changed.py::test_resources_list_changed_detects_update",
+      "feature": "resources/list_changed",
+      "level": "SHOULD",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_resources_read.py::test_resources_read_returns_text_or_blob",
+      "feature": "resources/read",
+      "level": "MUST",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_resources_read_errors.py::test_resources_read_nonexistent_uri_fails",
+      "feature": "resources/read",
+      "level": "SHOULD",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_resources_read_errors.py::test_resources_read_missing_uri_param_fails",
+      "feature": "resources/read",
+      "level": "MUST",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_resources_smoke.py::test_resources_list_responds",
+      "feature": "resources/list",
+      "level": "MUST",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_resources_smoke.py::test_resources_read_returns_content",
+      "feature": "resources/read",
+      "level": "MUST",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_resources_smoke.py::test_resources_templates_list",
+      "feature": "resources/templates/list",
+      "level": "MUST",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_resources_smoke.py::test_resources_list_changed_supported",
+      "feature": "resources/list_changed",
+      "level": "SHOULD",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_resources_smoke.py::test_resources_subscribe_supported",
+      "feature": "resources/subscribe",
+      "level": "SHOULD",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_resources_subscribe.py::test_resources_subscribe_declared",
+      "feature": "resources/subscribe",
+      "level": "SHOULD",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_resources_templates.py::test_resources_templates_are_valid",
+      "feature": "resources/templates/list",
+      "level": "MUST",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_spec_version.py::test_spec_version_is_supported",
+      "feature": "spec/version",
+      "level": "MUST",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_spec_version.py::test_spec_features_are_defined",
+      "feature": "spec/features",
+      "level": "MUST",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_tools_call.py::test_tools_call_works_with_valid_input",
+      "feature": "tools/call",
+      "level": "MUST",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_tools_call.py::test_tools_call_missing_required_args_fails",
+      "feature": "tools/call",
+      "level": "MUST",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_tools_call.py::test_tools_call_invalid_tool_name_fails",
+      "feature": "tools/call",
+      "level": "MUST",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_tools_call.py::test_tools_call_access_control_fails",
+      "feature": "tools/call",
+      "level": "SHOULD",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_tools_call.py::test_tools_call_rate_limit",
+      "feature": "tools/call",
+      "level": "SHOULD",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_tools_call.py::test_tools_call_output_sanitization",
+      "feature": "tools/call",
+      "level": "SHOULD",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_tools_call_errors.py::test_tools_call_returns_error_flag",
+      "feature": "tools/call",
+      "level": "SHOULD",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_tools_call_errors.py::test_tools_call_error_content_is_valid",
+      "feature": "tools/call",
+      "level": "MUST",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_tools_completion_smoke.py::test_tools_list_responds",
+      "feature": "tools/list",
+      "level": "MUST",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_tools_completion_smoke.py::test_tools_call_accepts_valid_input",
+      "feature": "tools/call",
+      "level": "MUST",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_tools_completion_smoke.py::test_tools_list_changed_supported",
+      "feature": "tools/list_changed",
+      "level": "SHOULD",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_tools_completion_smoke.py::test_prompt_argument_completion_supported",
+      "feature": "completion/complete",
+      "level": "MUST",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_tools_completion_smoke.py::test_resource_uri_completion_supported",
+      "feature": "completion/complete",
+      "level": "SHOULD",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_tools_fuzzing.py::test_tools_call_argument_fuzzing",
+      "feature": "security/input_validation",
+      "level": "SHOULD",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_tools_fuzzing.py::test_tools_call_extra_arguments",
+      "feature": "security/input_validation",
+      "level": "SHOULD",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_tools_fuzzing.py::test_tools_call_wrong_argument_types",
+      "feature": "security/input_validation",
+      "level": "SHOULD",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_tools_fuzzing.py::test_tools_call_large_inputs",
+      "feature": "security/input_validation",
+      "level": "SHOULD",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_tools_list.py::test_tools_list_returns_valid_tools",
+      "feature": "tools/list",
+      "level": "MUST",
+      "outcome": "PASS"
+    },
+    {
+      "test": "tests/test_tools_list_changed.py::test_tools_list_changed_notification_polling",
+      "feature": "tools/list_changed",
+      "level": "SHOULD",
+      "outcome": "PASS"
+    }
+  ]
+}

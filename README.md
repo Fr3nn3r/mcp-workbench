@@ -127,3 +127,59 @@ mcp-workbench/
 └── reports/              # Generated reports
     └── summary.json
 ```
+
+## Using the Mock MCP Server
+
+The workbench includes a mock MCP server that can be used for local testing and CI environments. This server implements the MCP protocol and responds to all standard methods with realistic responses.
+
+### Run as a standalone server
+
+To run the mock server as a standalone process:
+
+```bash
+# Set environment variable to use Flask
+export FLASK_APP=mcp.mock_server
+# Run server on port 8000
+flask run --port=8000
+```
+
+### Use with pytest
+
+For CI environments or automated testing, you can use the `--mock-server` flag with pytest:
+
+```bash
+# Run tests with the mock server
+pytest --mock-server
+```
+
+This will start an in-process mock server on port 8000 and configure tests to use it automatically.
+
+### Mock Server Features
+
+The mock server supports:
+
+- Basic MCP endpoints:
+  - `prompts/list`, `prompts/get`
+  - `tools/list`, `tools/call`
+  - `resources/list`, `resources/read`, etc.
+- Error simulation
+- Rate limiting
+- Access control with the admin_only_tool
+- Proper JSON-RPC validation
+- Custom admin endpoints to configure behavior
+
+### Configuring Server Behavior
+
+The server has an admin endpoint for configuring behavior during testing:
+
+```bash
+# Example: Configure server to simulate slow responses
+curl -X POST http://localhost:8000/admin/config \
+  -H "Content-Type: application/json" \
+  -d '{"slow_response": true}'
+```
+
+Available configuration options:
+- `simulate_errors`: Force certain endpoints to return errors
+- `slow_response`: Add a delay to responses
+- `force_invalid_json`: Return an invalid JSON response (useful for testing error handling)

@@ -13,6 +13,7 @@ dependencies = [
     "pytest>=7.0.0",
     "httpx>=0.22.0",
     "pydantic>=2.0.0",
+    "flask>=2.0.0",
 ]
 
 [project.scripts]
@@ -28,6 +29,19 @@ dev = [
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 python_files = "test_*.py"
+# Register the pytest plugin to allow --mock-server flag
+addopts = "--import-mode=importlib"
+pythonpath = ["."]
 
 [tool.setuptools]
-packages = ["mcp", "tests"]
+# Using packages.find instead of direct packages list
+# packages = ["mcp", "tests"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+
+[tool.setuptools.package-data]
+"mcp" = ["resources/**/*"]
+
+[pytest.plugins]
+mcp = "mcp.pytest_plugin"

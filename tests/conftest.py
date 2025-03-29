@@ -1,6 +1,7 @@
 import pytest
 from unittest.mock import MagicMock
 import time
+import httpx
 
 
 class MockMCPClient:
@@ -136,6 +137,20 @@ class MockMCPClient:
                                 "required": ["text"],
                             },
                         },
+                        {
+                            "name": "echo",
+                            "description": "A tool that echoes the input text",
+                            "inputSchema": {
+                                "type": "object",
+                                "required": ["text"],
+                                "properties": {
+                                    "text": {
+                                        "type": "string",
+                                        "description": "Text to echo back",
+                                    }
+                                },
+                            },
+                        },
                     ]
                 }
             },
@@ -158,6 +173,10 @@ class MockMCPClient:
         self._tool_change_timer = 0
         self._call_count = {}  # Track tool call counts for rate limiting
         self._call_reset_time = time.time()
+
+        # Add session and base_url for raw JSON-RPC testing
+        self.session = httpx.Client()
+        self.base_url = "http://localhost:8000"  # Default mock URL
 
     def send(self, method, params=None):
         """Simulate sending a request to an MCP server."""
@@ -416,6 +435,18 @@ class MockMCPClient:
                     ]
                 }
             }
+
+        # Handle the echo tool
+        if name == "echo":
+            text = arguments.get("text", "")
+            # Basic sanitization for demonstration purposes
+            sanitized_text = text.replace("<script>", "&lt;script&gt;").replace(
+                "</script>", "&lt;/script&gt;"
+            )
+            # Remove dangerous HTML attributes
+            sanitized_text = sanitized_text.replace("onerror=", "data-removed=")
+            sanitized_text = sanitized_text.replace("onclick=", "data-removed=")
+            return {"result": {"output": sanitized_text}}
 
         # Return tool execution result
         return {
