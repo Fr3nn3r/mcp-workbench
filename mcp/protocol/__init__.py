@@ -7,6 +7,11 @@ from mcp.protocol.schema import (
     ResourceContent,
     PromptMessage,
     PromptsGetResult,
+    Resource,
+    ResourcesListResult,
+    ResourcesReadResult,
+    ResourceTemplate,
+    ResourcesTemplatesListResult,
 )
 
 __all__ = [
@@ -18,4 +23,9 @@ __all__ = [
     "ResourceContent",
     "PromptMessage",
     "PromptsGetResult",
+    "Resource",
+    "ResourcesListResult",
+    "ResourcesReadResult",
+    "ResourceTemplate",
+    "ResourcesTemplatesListResult",
 ]

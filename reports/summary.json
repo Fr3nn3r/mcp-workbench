@@ -30,6 +30,78 @@
     "outcome": "PASS"
   },
   {
+    "test": "tests/test_resources_list.py::test_resources_list_returns_valid_structure",
+    "feature": "resources/list",
+    "level": "MUST",
+    "outcome": "PASS"
+  },
+  {
+    "test": "tests/test_resources_list_changed.py::test_resources_list_changed_detects_update",
+    "feature": "resources/list_changed",
+    "level": "SHOULD",
+    "outcome": "PASS"
+  },
+  {
+    "test": "tests/test_resources_read.py::test_resources_read_returns_text_or_blob",
+    "feature": "resources/read",
+    "level": "MUST",
+    "outcome": "PASS"
+  },
+  {
+    "test": "tests/test_resources_read_errors.py::test_resources_read_nonexistent_uri_fails",
+    "feature": "resources/read",
+    "level": "SHOULD",
+    "outcome": "PASS"
+  },
+  {
+    "test": "tests/test_resources_read_errors.py::test_resources_read_missing_uri_param_fails",
+    "feature": "resources/read",
+    "level": "MUST",
+    "outcome": "PASS"
+  },
+  {
+    "test": "tests/test_resources_smoke.py::test_resources_list_responds",
+    "feature": "resources/list",
+    "level": "MUST",
+    "outcome": "PASS"
+  },
+  {
+    "test": "tests/test_resources_smoke.py::test_resources_read_returns_content",
+    "feature": "resources/read",
+    "level": "MUST",
+    "outcome": "PASS"
+  },
+  {
+    "test": "tests/test_resources_smoke.py::test_resources_templates_list",
+    "feature": "resources/templates/list",
+    "level": "MUST",
+    "outcome": "PASS"
+  },
+  {
+    "test": "tests/test_resources_smoke.py::test_resources_list_changed_supported",
+    "feature": "resources/list_changed",
+    "level": "SHOULD",
+    "outcome": "PASS"
+  },
+  {
+    "test": "tests/test_resources_smoke.py::test_resources_subscribe_supported",
+    "feature": "resources/subscribe",
+    "level": "SHOULD",
+    "outcome": "PASS"
+  },
+  {
+    "test": "tests/test_resources_subscribe.py::test_resources_subscribe_declared",
+    "feature": "resources/subscribe",
+    "level": "SHOULD",
+    "outcome": "PASS"
+  },
+  {
+    "test": "tests/test_resources_templates.py::test_resources_templates_are_valid",
+    "feature": "resources/templates/list",
+    "level": "MUST",
+    "outcome": "PASS"
+  },
+  {
     "test": "tests/test_spec_version.py::test_spec_version_is_supported",
     "feature": "spec/version",
     "level": "MUST",

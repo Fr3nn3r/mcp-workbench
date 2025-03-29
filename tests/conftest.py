@@ -28,22 +28,64 @@ class MockMCPClient:
                         },
                     ]
                 }
-            }
+            },
+            # Resources endpoints
+            "resources/list": {
+                "result": {
+                    "resources": [
+                        {
+                            "uri": "example://resource1",
+                            "name": "Example Resource 1",
+                            "mimeType": "text/plain",
+                        },
+                        {
+                            "uri": "example://resource2",
+                            "name": "Example Resource 2",
+                            "mimeType": "application/json",
+                        },
+                    ]
+                }
+            },
+            "resources/templates/list": {
+                "result": {
+                    "resourceTemplates": [
+                        {
+                            "uriTemplate": "template://example/{name}",
+                            "name": "Example Template",
+                            "mimeType": "text/plain",
+                        },
+                        {
+                            "uriTemplate": "template://config/{filename}",
+                            "name": "Configuration Template",
+                            "mimeType": "application/json",
+                        },
+                    ]
+                }
+            },
         }
         self.capabilities = {
-            "prompts": {"list": True, "get": True, "listChanged": True}
+            "prompts": {"list": True, "get": True, "listChanged": True},
+            "resources": {
+                "list": True,
+                "read": True,
+                "templates": {"list": True},
+                "listChanged": True,
+                "subscribe": True,
+            },
         }
         self.prompt_list_changes = False
         self._change_timer = 0
 
     def send(self, method, params=None):
         """Simulate sending a request to an MCP server."""
-        if method not in self.responses and method != "prompts/get":
-            raise ValueError(f"Method {method} not supported in mock client")
-
-        # Handle prompts/get dynamically
         if method == "prompts/get":
             return self._handle_prompts_get(params or {})
+
+        if method == "resources/read":
+            return self._handle_resources_read(params or {})
+
+        if method == "resources/subscribe":
+            return self._handle_resources_subscribe(params or {})
 
         # Handle prompts/list with possible changes
         if method == "prompts/list":
@@ -58,7 +100,10 @@ class MockMCPClient:
                 self.prompt_list_changes = False
             return self.responses["prompts/list"]
 
-        return self.responses[method]
+        if method in self.responses:
+            return self.responses[method]
+
+        raise ValueError(f"Method {method} not supported in mock client")
 
     def get_capabilities(self):
         """Return the server capabilities."""
@@ -134,6 +179,52 @@ class MockMCPClient:
                     ],
                 }
             }
+
+    def _handle_resources_read(self, params):
+        """Handle resources/read requests."""
+        uri = params.get("uri")
+        if not uri:
+            raise ValueError("Invalid params: missing uri parameter (-32602)")
+
+        # Check if the URI is nonexistent.fake which is our test case
+        if "nonexistent" in uri:
+            raise ValueError("Resource not found (-32002)")
+
+        # Find the resource in our list
+        resources_list = self.responses["resources/list"]["result"]["resources"]
+        resource = next((r for r in resources_list if r["uri"] == uri), None)
+
+        if not resource:
+            raise ValueError("Invalid params: unknown resource uri (-32602)")
+
+        # Return the resource content
+        return {
+            "result": {
+                "contents": [
+                    {
+                        "uri": uri,
+                        "mimeType": resource["mimeType"],
+                        "text": f"Content of {resource['name']}",
+                    }
+                ]
+            }
+        }
+
+    def _handle_resources_subscribe(self, params):
+        """Handle resources/subscribe requests."""
+        uri = params.get("uri")
+        if not uri:
+            raise ValueError("Invalid params: missing uri parameter (-32602)")
+
+        # Find the resource in our list
+        resources_list = self.responses["resources/list"]["result"]["resources"]
+        resource = next((r for r in resources_list if r["uri"] == uri), None)
+
+        if not resource:
+            raise ValueError("Invalid params: unknown resource uri (-32602)")
+
+        # Return a success response
+        return {"result": {"status": "subscribed", "uri": uri}}
 
 
 @pytest.fixture

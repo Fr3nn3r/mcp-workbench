@@ -1,4 +1,4 @@
-from typing import List, Optional, Union, Dict
+from typing import List, Optional, Union, Dict, Any
 from pydantic import BaseModel
 
 
@@ -44,3 +44,42 @@ class PromptMessage(BaseModel):
 class PromptsGetResult(BaseModel):
     description: Optional[str] = None
     messages: List[PromptMessage]
+
+
+# Models for resources/list
+class Resource(BaseModel):
+    uri: str
+    name: str
+    mimeType: Optional[str] = None
+    description: Optional[str] = None
+
+
+class ResourcesListResult(BaseModel):
+    resources: List[Resource]
+    nextCursor: Optional[str] = None
+
+
+# Models for resources/read
+class ResourceContent(BaseModel):
+    uri: str
+    mimeType: str
+    text: Optional[str] = None
+    blob: Optional[str] = None
+
+
+class ResourcesReadResult(BaseModel):
+    contents: List[ResourceContent]
+
+
+# Models for resources/templates/list
+class ResourceTemplate(BaseModel):
+    uriTemplate: str
+    name: str
+    mimeType: str
+    description: Optional[str] = None
+    parameters: Optional[List[Dict[str, Any]]] = None
+
+
+class ResourcesTemplatesListResult(BaseModel):
+    resourceTemplates: List[ResourceTemplate]
+    nextCursor: Optional[str] = None
