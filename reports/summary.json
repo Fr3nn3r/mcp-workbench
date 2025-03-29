@@ -1,0 +1,44 @@
+[
+  {
+    "test": "tests/test_prompts_get.py::test_prompts_get_returns_valid_prompt",
+    "feature": "prompts/get",
+    "level": "MUST",
+    "outcome": "PASS"
+  },
+  {
+    "test": "tests/test_prompts_get.py::test_prompts_get_fails_on_missing_required_arg",
+    "feature": "prompts/get",
+    "level": "MUST",
+    "outcome": "PASS"
+  },
+  {
+    "test": "tests/test_prompts_get.py::test_prompts_get_fails_on_invalid_prompt_name",
+    "feature": "prompts/get",
+    "level": "MUST",
+    "outcome": "PASS"
+  },
+  {
+    "test": "tests/test_prompts_list.py::test_prompts_list_returns_valid_structure",
+    "feature": "prompts/list",
+    "level": "MUST",
+    "outcome": "PASS"
+  },
+  {
+    "test": "tests/test_prompts_list_changed.py::test_prompts_list_changed_detects_update",
+    "feature": "prompts/list_changed",
+    "level": "SHOULD",
+    "outcome": "PASS"
+  },
+  {
+    "test": "tests/test_spec_version.py::test_spec_version_is_supported",
+    "feature": "spec/version",
+    "level": "MUST",
+    "outcome": "PASS"
+  },
+  {
+    "test": "tests/test_spec_version.py::test_spec_features_are_defined",
+    "feature": "spec/features",
+    "level": "MUST",
+    "outcome": "PASS"
+  }
+]
